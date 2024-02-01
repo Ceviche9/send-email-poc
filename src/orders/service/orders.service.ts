@@ -23,7 +23,7 @@ export class OrdersService {
     await this.nodemailerProvider.sendMail({
       order: Number(id),
       price: order.pagamentos[0].valor_pago,
-      products: [order.itens[0].nome],
+      products: order.itens.map((item) => item.nome),
       email,
     });
 
