@@ -51,8 +51,8 @@ export function generateDocumentValidation({
           Prezado(a) <strong>${name}</strong>, tudo bem? Estamos entrando em 
           contato em razão do pedido de número: <strong>${order}</strong>, 
           onde consta o produto: <strong>${products}</strong>, 
-          parcelado em <strong>${installments}x</strong> de R$ <strong>${installmentsValue}</strong>, 
-          totalizando R$ <strong>${price}</strong>. 
+          parcelado em <strong>${installments}x</strong> de <strong>R$ ${installmentsValue}</strong>, 
+          totalizando <strong>R$ ${price}</strong>. 
           Ressaltamos que adotamos novas práticas de segurança para a primeira compra via cartão de crédito, 
           iremos prosseguir com os procedimentos de emissão da nota fiscal e envio, assim que os documentos seguintes forem confirmados, 
           são eles:
