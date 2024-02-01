@@ -43,7 +43,7 @@ export class NodemailerProvider {
           'Algo deu errado para enviar o email para essa conta',
         );
     } catch (err) {
-      console.log(err);
+      throw new InternalServerErrorException('Erro ao enviar email');
     }
   }
 }
