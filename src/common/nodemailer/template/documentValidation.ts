@@ -64,7 +64,6 @@ export function generateDocumentValidation({
         <p>Agradecemos vossa atenção!</p>
         <p>-- Atenciosamente</p>
       </div>
-      <a href="https://imgbox.com/gaNjuh43" target="_blank"><img src="https://thumbs2.imgbox.com/23/8d/gaNjuh43_t.jpeg" alt="image host"/></a>
     </body>
   </html>
   `;
