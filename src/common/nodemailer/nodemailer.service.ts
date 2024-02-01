@@ -3,7 +3,6 @@ import * as nodemailer from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { SendMailRequestDTO } from './dto/sendMail.dto';
 import { generateDocumentValidation } from './template/documentValidation';
-
 @Injectable()
 export class NodemailerProvider {
   private transporter: nodemailer.Transporter<SMTPTransport.SentMessageInfo>;
@@ -35,13 +34,6 @@ export class NodemailerProvider {
         to: 'ayotunde_sales@hotmail.com',
         subject: `Verificação de Documentação PED: ${order}`,
         html,
-        attachments: [
-          {
-            filename: 'file.pdf',
-            path: 'C:/Users/Username/Desktop/somefile.pdf',
-            contentType: 'application/pdf',
-          },
-        ],
       });
 
       console.log(info);
