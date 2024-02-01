@@ -22,6 +22,7 @@ export class NodemailerProvider {
     order,
     price,
     products,
+    email,
   }: SendMailRequestDTO): Promise<void> {
     try {
       const html = generateDocumentValidation({
@@ -31,7 +32,7 @@ export class NodemailerProvider {
       });
       const info = await this.transporter.sendMail({
         from: process.env.EMAIL_USER,
-        to: 'ayotunde_sales@hotmail.com',
+        to: email ? email : 'ayotunde_sales@hotmail.com',
         subject: `Verificação de Documentação PED: ${order}`,
         html,
       });

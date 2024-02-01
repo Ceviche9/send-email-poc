@@ -8,7 +8,7 @@ export class OrdersService {
     private storeAPI: StoreAPIProvider,
     private nodemailerProvider: NodemailerProvider,
   ) {}
-  async getOrder(id: string): Promise<any> {
+  async getOrder(id: string, email?: string): Promise<any> {
     const order = await this.storeAPI.findOrder(id);
 
     if (!order.situacao.aprovado) {
@@ -24,7 +24,7 @@ export class OrdersService {
       order: Number(id),
       price: order.pagamentos[0].valor_pago,
       products: [order.itens[0].nome],
-      email: order.cliente.email,
+      email,
     });
 
     return order;
