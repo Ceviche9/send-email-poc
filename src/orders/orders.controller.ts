@@ -5,7 +5,7 @@ import { OrdersService } from './service/orders.service';
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
-  @Get('/:id')
+  @Get('/:id/:email')
   async getOrderById(
     @Req() request: Request,
     @Param('id') id: string,
