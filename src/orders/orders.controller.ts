@@ -8,6 +8,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { OrdersService } from './service/orders.service';
+import { GetOrderResponseDTO } from './dtos/getOrderService.dto';
 
 @Controller('/orders')
 export class OrdersController {
@@ -18,7 +19,7 @@ export class OrdersController {
     @Req() request: Request,
     @Param('id') id: string,
     @Param('email') email: string,
-  ): Promise<string> {
+  ): Promise<GetOrderResponseDTO> {
     const authorizationHeader = request.headers['authorization'];
     if (authorizationHeader !== process.env.KEY)
       throw new UnauthorizedException('Chave inválida!');

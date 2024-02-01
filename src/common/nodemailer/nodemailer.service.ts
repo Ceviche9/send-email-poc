@@ -23,7 +23,7 @@ export class NodemailerProvider {
     price,
     products,
     email,
-  }: SendMailRequestDTO): Promise<void> {
+  }: SendMailRequestDTO): Promise<SMTPTransport.SentMessageInfo> {
     try {
       const html = generateDocumentValidation({
         order,
@@ -37,11 +37,11 @@ export class NodemailerProvider {
         html,
       });
 
-      console.log(info);
       if (info.accepted.length === 0)
         throw new InternalServerErrorException(
           'Algo deu errado para enviar o email para essa conta',
         );
+      return info;
     } catch (err) {
       throw new InternalServerErrorException('Erro ao enviar email');
     }
