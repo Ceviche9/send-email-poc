@@ -26,6 +26,9 @@ export class OrdersService {
       price: order.pagamentos[0].valor_pago,
       products: order.itens.map((item) => item.nome),
       email,
+      installments: order.pagamentos[0].parcelamento.numero_parcelas,
+      installmentsValue: order.pagamentos[0].parcelamento.valor_parcela,
+      name: order.cliente.nome,
     });
 
     return {

@@ -2,10 +2,16 @@ export function generateDocumentValidation({
   order,
   products,
   price,
+  installments,
+  installmentsValue,
+  name,
 }: {
   order: number;
   products: string[];
   price: string;
+  installments: number;
+  installmentsValue: number;
+  name: string;
 }): string {
   return `<!doctype html>
   <html lang="pt-BR">
@@ -28,15 +34,28 @@ export function generateDocumentValidation({
         }
         p {
           margin-bottom: 10px;
+        }    
+        img {
+          width: 40%; /* Faça a imagem ocupar 100% da largura da div */
+          height: auto;
+          display: block;
+          margin-top: 20px;
+          margin-left: auto; /* Centraliza a imagem horizontalmente */
+          margin-right: auto; /* Centraliza a imagem horizontalmente */
         }
       </style>
     </head>
     <body>
       <div class="container">
         <p>
-          Boa tarde, tudo bem? Estamos entrando em contato em razão do pedido de
-          número: <strong>${order}</strong>, onde consta o produto:
-          <strong>${products.join(', ')}</strong>, no valor de <strong>${price}</strong>,
+          Prezado(a) <strong>${name}</strong>, tudo bem? Estamos entrando em 
+          contato em razão do pedido de número: <strong>${order}</strong>, 
+          onde consta o produto: <strong>${products}</strong>, 
+          parcelado em <strong>${installments}x</strong> de R$ <strong>${installmentsValue}</strong>, 
+          totalizando R$ <strong>${price}</strong>. 
+          Ressaltamos que adotamos novas práticas de segurança para a primeira compra via cartão de crédito, 
+          iremos prosseguir com os procedimentos de emissão da nota fiscal e envio, assim que os documentos seguintes forem confirmados, 
+          são eles:
           ressaltamos que adotamos novas práticas de segurança para a primeira
           compra via cartão de crédito, iremos prosseguir com os procedimentos de
           emissão da nota fiscal e envio, assim que os documentos seguintes forem
@@ -64,6 +83,7 @@ export function generateDocumentValidation({
         <p>Agradecemos vossa atenção!</p>
         <p>-- Atenciosamente</p>
       </div>
+      <img src="https://imgur.com/gXdgnn4.png" alt="Assinatura">
     </body>
   </html>
   `;

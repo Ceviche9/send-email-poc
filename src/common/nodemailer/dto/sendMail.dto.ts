@@ -3,4 +3,7 @@ export class SendMailRequestDTO {
   products: string[];
   order: number;
   price: string;
+  installments: number;
+  installmentsValue: number;
+  name: string;
 }

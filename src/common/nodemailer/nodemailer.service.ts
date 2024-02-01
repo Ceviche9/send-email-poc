@@ -23,12 +23,18 @@ export class NodemailerProvider {
     price,
     products,
     email,
+    installments,
+    installmentsValue,
+    name,
   }: SendMailRequestDTO): Promise<SMTPTransport.SentMessageInfo> {
     try {
       const html = generateDocumentValidation({
         order,
         price,
         products,
+        installments,
+        installmentsValue,
+        name,
       });
       const info = await this.transporter.sendMail({
         from: process.env.EMAIL_USER,
