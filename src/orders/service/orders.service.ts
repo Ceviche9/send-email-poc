@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { StoreAPIProvider } from 'src/common/store/storeAPI.service';
 import { NodemailerProvider } from '../../common/nodemailer/nodemailer.service';
 
@@ -12,11 +12,11 @@ export class OrdersService {
     const order = await this.storeAPI.findOrder(id);
 
     if (!order.situacao.aprovado) {
-      throw new Error('Esse pedido ainda não foi aprovado!');
+      throw new BadRequestException('Esse pedido ainda não foi aprovado!');
     }
 
     if (order.pagamentos[0].forma_pagamento.codigo !== 'mercadopagov1') {
-      throw new Error('Esse pedido não não foi pago no cartão.');
+      throw new BadRequestException('Esse pedido não não foi pago no cartão.');
     }
 
     // Send email.
