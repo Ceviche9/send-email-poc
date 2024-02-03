@@ -1,31 +1,28 @@
 import {
   Controller,
-  Get,
-  Param,
   Req,
   Request,
   UnauthorizedException,
-  BadRequestException,
+  Post,
+  Body,
 } from '@nestjs/common';
 import { OrdersService } from './service/orders.service';
 import { GetOrderResponseDTO } from './dtos/getOrderService.dto';
+import { SendConfirmationEmailDTO } from './dtos/sendConfirmationEmail.dto';
 
 @Controller('/orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
-  @Get('/:id/:email')
-  async getOrderById(
+  @Post('/send-email')
+  async sendEmailConfirmation(
     @Req() request: Request,
-    @Param('id') id: string,
-    @Param('email') email: string,
+    @Body() data: SendConfirmationEmailDTO,
   ): Promise<GetOrderResponseDTO> {
     const authorizationHeader = request.headers['authorization'];
     if (authorizationHeader !== process.env.KEY)
       throw new UnauthorizedException('Chave inválida!');
-    if (!id)
-      throw new BadRequestException('Informe um número de pedido válido!');
-    const response = await this.ordersService.getOrder(id, email);
+    const response = await this.ordersService.sendConfirmationEmail(data);
     return response;
   }
 }
