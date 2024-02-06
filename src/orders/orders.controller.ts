@@ -23,6 +23,8 @@ export class OrdersController {
     const authorizationHeader = request.headers['authorization'];
     if (authorizationHeader !== process.env.KEY || !authorizationHeader) {
       Logger.error('Chave invávlida enviada:', authorizationHeader);
+      console.log('chave enviada', authorizationHeader);
+      console.log('chave que deve ser enviada', process.env.KEY);
       throw new UnauthorizedException('Chave inválida!');
     }
     const response = await this.ordersService.sendConfirmationEmail(data);
