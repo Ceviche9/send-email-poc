@@ -25,4 +25,15 @@ export class OrdersController {
     const response = await this.ordersService.sendConfirmationEmail(data);
     return response;
   }
+
+  @Post('/verify-status')
+  async verifyOrderStatus(
+    @Req() request: Request,
+    @Body() data: any,
+  ): Promise<void> {
+    const authorizationHeader = request.headers['authorization'];
+    if (authorizationHeader !== process.env.KEY)
+      throw new UnauthorizedException('Chave inválida!');
+    await this.ordersService.verifyOrderStatus(data);
+  }
 }
