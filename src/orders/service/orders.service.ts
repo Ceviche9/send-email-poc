@@ -3,7 +3,7 @@ import { StoreAPIProvider } from 'src/common/store/storeAPI.service';
 import { NodemailerProvider } from '../../common/nodemailer/nodemailer.service';
 import { GetOrderResponseDTO } from '../dtos/getOrderService.dto';
 import { SendConfirmationEmailDTO } from '../dtos/sendConfirmationEmail.dto';
-import { OrderDTO } from 'src/common/store/dto/order.dto';
+import { VerifyOrderDTO } from '../dtos/verifyOrder.dto';
 
 @Injectable()
 export class OrdersService {
@@ -46,7 +46,7 @@ export class OrdersService {
     };
   }
 
-  async verifyOrderStatus(order: OrderDTO): Promise<void> {
+  async verifyOrderStatus(order: VerifyOrderDTO): Promise<void> {
     if (order.pagamentos[0].forma_pagamento.codigo !== 'mercadopagov1') {
       Logger.error(
         'Pedido não foi pago pelo cartão:',

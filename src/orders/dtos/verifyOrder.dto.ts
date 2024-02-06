@@ -1,3 +1,4 @@
+import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 import {
   Cliente,
   EnderecoEntrega,
@@ -5,28 +6,29 @@ import {
   Item,
   Pagamento,
   Situacao,
-} from './order.dto';
+} from '../../common/store/dto/order.dto';
 
-export class OrderDTO {
+export class VerifyOrderDTO {
+  @IsNotEmpty()
   cliente: Cliente;
+  @IsOptional()
   cliente_obs: string | null;
+  @IsOptional()
   cupom_desconto: string | null;
-  data_criacao: string;
-  data_expiracao: string;
-  data_modificacao: string;
+  @IsNotEmpty()
   endereco_entrega: EnderecoEntrega;
+  @IsNotEmpty()
   envios: Envio[];
+  @IsOptional()
   id_anymarket: string | null;
+  @IsOptional()
   id_externo: string | null;
+  @IsNotEmpty()
   itens: Item[];
+  @IsNumber()
   numero: number;
+  @IsNotEmpty()
   pagamentos: Pagamento[];
-  peso_real: string;
-  resource_uri: string;
+  @IsNotEmpty()
   situacao: Situacao;
-  utm_campaign: string | null;
-  valor_desconto: string;
-  valor_envio: string;
-  valor_subtotal: string;
-  valor_total: string;
 }

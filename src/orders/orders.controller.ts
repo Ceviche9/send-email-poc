@@ -10,6 +10,7 @@ import {
 import { OrdersService } from './service/orders.service';
 import { GetOrderResponseDTO } from './dtos/getOrderService.dto';
 import { SendConfirmationEmailDTO } from './dtos/sendConfirmationEmail.dto';
+import { VerifyOrderDTO } from './dtos/verifyOrder.dto';
 
 @Controller('/orders')
 export class OrdersController {
@@ -32,7 +33,7 @@ export class OrdersController {
   @Post('/verify-status')
   async verifyOrderStatus(
     @Req() request: Request,
-    @Body() data: any,
+    @Body() data: VerifyOrderDTO,
   ): Promise<void> {
     Logger.log('Rota de verify sendo chamada, body:', data);
     const authorizationHeader = request.headers['authorization'];
