@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { StoreAPIProvider } from 'src/common/store/storeAPI.service';
 import { NodemailerProvider } from '../../common/nodemailer/nodemailer.service';
 import { GetOrderResponseDTO } from '../dtos/getOrderService.dto';
@@ -38,5 +38,9 @@ export class OrdersService {
       email: emailResponse,
       orderId: orderId,
     };
+  }
+
+  async verifyOrderStatus(data: any): Promise<void> {
+    Logger.log('WEBHOOK RESPONSE', data);
   }
 }
