@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
   Post,
   Body,
+  Logger,
 } from '@nestjs/common';
 import { OrdersService } from './service/orders.service';
 import { GetOrderResponseDTO } from './dtos/getOrderService.dto';
@@ -31,6 +32,8 @@ export class OrdersController {
     @Req() request: Request,
     @Body() data: any,
   ): Promise<void> {
+    Logger.log('Rota de verify sendo chamada, body:', data);
+    Logger.log('Rota de verify sendo chamada, header:', request.headers);
     const authorizationHeader = request.headers['authorization'];
     if (authorizationHeader !== process.env.KEY)
       throw new UnauthorizedException('Chave inválida!');
