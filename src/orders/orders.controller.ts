@@ -21,8 +21,10 @@ export class OrdersController {
     @Body() data: SendConfirmationEmailDTO,
   ): Promise<GetOrderResponseDTO> {
     const authorizationHeader = request.headers['authorization'];
-    if (authorizationHeader !== process.env.KEY)
+    if (authorizationHeader !== process.env.KEY || !authorizationHeader) {
+      Logger.error('Chave invávlida enviada:', authorizationHeader);
       throw new UnauthorizedException('Chave inválida!');
+    }
     const response = await this.ordersService.sendConfirmationEmail(data);
     return response;
   }
