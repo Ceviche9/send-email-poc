@@ -18,7 +18,7 @@ export class OrdersService {
     const order = await this.storeAPI.findOrder(orderId);
 
     if (!order) {
-      Logger.error('Id de pedido errado', orderId);
+      Logger.log('Id de pedido errado', orderId);
       throw new BadRequestException('iD de pedido está errado!');
     }
 
@@ -48,7 +48,7 @@ export class OrdersService {
 
   async verifyOrderStatus(order: VerifyOrderDTO): Promise<void> {
     if (order.pagamentos[0].forma_pagamento.codigo !== 'mercadopagov1') {
-      Logger.error(
+      Logger.log(
         'Pedido não foi pago pelo cartão:',
         order.pagamentos[0].forma_pagamento.codigo,
       );
@@ -56,7 +56,7 @@ export class OrdersService {
     }
 
     if (!order.situacao.aprovado) {
-      Logger.error('Pedido não foi aprovado:', order.situacao);
+      Logger.log('Pedido não foi aprovado:', order.situacao);
       throw new BadRequestException('Esse pedido ainda não foi aprovado!');
     }
 
