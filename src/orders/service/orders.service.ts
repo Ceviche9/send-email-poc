@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { StoreAPIProvider } from 'src/common/store/storeAPI.service';
 import { NodemailerProvider } from '../../common/nodemailer/nodemailer.service';
 import { GetOrderResponseDTO } from '../dtos/getOrderService.dto';
+import { SendConfirmationEmailDTO } from '../dtos/sendConfirmationEmail.dto';
 
 @Injectable()
 export class OrdersService {
@@ -9,8 +10,11 @@ export class OrdersService {
     private storeAPI: StoreAPIProvider,
     private nodemailerProvider: NodemailerProvider,
   ) {}
-  async getOrder(id: string, email?: string): Promise<GetOrderResponseDTO> {
-    const order = await this.storeAPI.findOrder(id);
+  async sendConfirmationEmail({
+    orderId,
+    email,
+  }: SendConfirmationEmailDTO): Promise<GetOrderResponseDTO> {
+    const order = await this.storeAPI.findOrder(orderId);
 
     if (!order.situacao.aprovado) {
       throw new BadRequestException('Esse pedido ainda não foi aprovado!');
@@ -20,9 +24,8 @@ export class OrdersService {
       throw new BadRequestException('Esse pedido não não foi pago no cartão.');
     }
 
-    // Send email.
     const emailResponse = await this.nodemailerProvider.sendMail({
-      order: Number(id),
+      order: Number(orderId),
       price: order.pagamentos[0].valor_pago,
       products: order.itens.map((item) => item.nome),
       email,
@@ -33,7 +36,7 @@ export class OrdersService {
 
     return {
       email: emailResponse,
-      orderId: id,
+      orderId: orderId,
     };
   }
 }

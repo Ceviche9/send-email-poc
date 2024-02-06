@@ -38,7 +38,7 @@ export class NodemailerProvider {
       });
       const info = await this.transporter.sendMail({
         from: process.env.EMAIL_USER,
-        to: email ? email : 'ayotunde_sales@hotmail.com',
+        to: email ? email : process.env.MY_EMAIL,
         subject: `Verificação de Documentação PED: ${order}`,
         html,
       });
