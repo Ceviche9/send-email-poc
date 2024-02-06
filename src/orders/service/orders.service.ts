@@ -60,7 +60,7 @@ export class OrdersService {
       throw new BadRequestException('Esse pedido ainda não foi aprovado!');
     }
 
-    await this.nodemailerProvider.sendMail({
+    const response = await this.nodemailerProvider.sendMail({
       order: Number(order.numero),
       price: order.pagamentos[0].valor_pago,
       products: order.itens.map((item) => item.nome),
@@ -69,5 +69,7 @@ export class OrdersService {
       installmentsValue: order.pagamentos[0].parcelamento.valor_parcela,
       name: order.cliente.nome,
     });
+
+    Logger.log('Email enviado:', response.accepted);
   }
 }
