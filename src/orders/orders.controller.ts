@@ -24,6 +24,7 @@ export class OrdersController {
     const authorizationHeader = request.headers['authorization'];
     if (authorizationHeader !== process.env.KEY || !authorizationHeader) {
       Logger.error('Chave inválida enviada');
+      console.log('Chave inválida enviada');
       throw new UnauthorizedException('Chave inválida!');
     }
     const response = await this.ordersService.sendConfirmationEmail(data);
@@ -38,6 +39,7 @@ export class OrdersController {
     Logger.log('Rota de verify sendo chamada, body:', {
       Body: {
         pedido: data.numero,
+        pagamento: data.pagamentos[0].pagamento_tipo,
       },
     });
     const authorizationHeader = request.headers['authorization'];

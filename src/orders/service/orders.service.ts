@@ -67,6 +67,10 @@ export class OrdersService {
           codigo: order.pagamentos[0].forma_pagamento.codigo,
         },
       });
+      console.log(
+        'Pedido não foi pago pelo cartão:',
+        order.pagamentos[0].forma_pagamento.codigo,
+      );
       throw new BadRequestException('Esse pedido não não foi pago no cartão.');
     }
 
@@ -76,6 +80,7 @@ export class OrdersService {
           status: order.situacao,
         },
       });
+      console.log('Pedido não foi aprovado:', order.situacao);
       throw new BadRequestException('Esse pedido ainda não foi aprovado!');
     }
 
@@ -94,5 +99,6 @@ export class OrdersService {
         queued: response.accepted,
       },
     });
+    console.log('Email enviado:', response.accepted);
   }
 }
