@@ -18,16 +18,30 @@ export class OrdersService {
     const order = await this.storeAPI.findOrder(orderId);
 
     if (!order) {
-      Logger.log('Id de pedido errado', orderId);
+      Logger.log('Id de pedido errado', {
+        body: {
+          pedido: orderId,
+        },
+      });
       throw new BadRequestException('iD de pedido está errado!');
     }
 
     if (!order.situacao.aprovado) {
+      Logger.log('Esse pedido ainda não foi aprovado!', {
+        body: {
+          status: order.situacao,
+        },
+      });
       throw new BadRequestException('Esse pedido ainda não foi aprovado!');
     }
 
     if (order.pagamentos[0].forma_pagamento.codigo !== 'mercadopagov1') {
-      throw new BadRequestException('Esse pedido não não foi pago no cartão.');
+      Logger.log('Esse pedido não foi pago no cartão', {
+        body: {
+          codigo: order.pagamentos[0].forma_pagamento.codigo,
+        },
+      });
+      throw new BadRequestException('Esse pedido não foi pago no cartão.');
     }
 
     const emailResponse = await this.nodemailerProvider.sendMail({
@@ -48,15 +62,20 @@ export class OrdersService {
 
   async verifyOrderStatus(order: VerifyOrderDTO): Promise<void> {
     if (order.pagamentos[0].forma_pagamento.codigo !== 'mercadopagov1') {
-      Logger.log(
-        'Pedido não foi pago pelo cartão:',
-        order.pagamentos[0].forma_pagamento.codigo,
-      );
+      Logger.log('Pedido não foi pago pelo cartão:', {
+        body: {
+          codigo: order.pagamentos[0].forma_pagamento.codigo,
+        },
+      });
       throw new BadRequestException('Esse pedido não não foi pago no cartão.');
     }
 
     if (!order.situacao.aprovado) {
-      Logger.log('Pedido não foi aprovado:', order.situacao);
+      Logger.log('Pedido não foi aprovado:', {
+        body: {
+          status: order.situacao,
+        },
+      });
       throw new BadRequestException('Esse pedido ainda não foi aprovado!');
     }
 
@@ -70,6 +89,10 @@ export class OrdersService {
       name: order.cliente.nome,
     });
 
-    Logger.log('Email enviado:', response.accepted);
+    Logger.log('Email enviado:', {
+      body: {
+        queued: response.accepted,
+      },
+    });
   }
 }
