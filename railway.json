@@ -1,0 +1,11 @@
+{
+  "commands": {
+    "build": {
+      "frontend": "npm run build",
+      "prisma": "npm run prisma generate"
+    },
+    "deploy": {
+      "start": "npm run start:prod"
+    }
+  }
+}
