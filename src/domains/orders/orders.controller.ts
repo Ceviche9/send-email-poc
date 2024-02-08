@@ -36,7 +36,8 @@ export class OrdersController {
     @Body() data: VerifyOrderDTO,
   ): Promise<string> {
     const authorizationHeader = request.headers['authorization'];
-    if (authorizationHeader !== process.env.KEY) {
+    const key = authorizationHeader.split(' ')[1];
+    if (key !== process.env.KEY) {
       Logger.error('Chave inválida enviada');
       console.log(request.headers);
       throw new UnauthorizedException('Chave inválida!');
