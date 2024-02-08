@@ -62,6 +62,7 @@ export class OrdersService {
       email: emailResponse.envelope.to[0],
       failed: emailResponse.accepted.length > 0 ? false : true,
       method: methodType.manually,
+      orderId: String(order.numero),
     });
 
     return {
@@ -70,7 +71,7 @@ export class OrdersService {
     };
   }
 
-  async verifyOrderStatus(order: VerifyOrderDTO): Promise<void> {
+  async verifyOrderStatus(order: VerifyOrderDTO): Promise<string> {
     if (order.pagamentos[0].forma_pagamento.codigo !== 'mercadopagov1') {
       Logger.log('Pedido não foi pago pelo cartão:', {
         body: {
@@ -108,6 +109,7 @@ export class OrdersService {
       email: response.envelope.to[0],
       failed: response.accepted.length > 0 ? false : true,
       method: methodType.webhook,
+      orderId: String(order.numero),
     });
 
     Logger.log('Email enviado:', {
@@ -115,23 +117,29 @@ export class OrdersService {
         queued: response.accepted,
       },
     });
+
+    return 'ok';
   }
 
   private async saveEmail({
     email,
     failed,
     method,
+    orderId,
   }: saveEmailRequestDTO): Promise<void> {
     if (!failed) {
       await this.emailVerificationRepository.create({
         email,
         method,
+        orderId,
+        failed,
       });
     } else {
       await this.emailVerificationRepository.create({
         email: email,
         failed,
         method,
+        orderId,
       });
     }
   }

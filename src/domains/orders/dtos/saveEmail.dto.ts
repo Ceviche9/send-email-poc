@@ -4,4 +4,5 @@ export class saveEmailRequestDTO {
   email: string;
   method: methodType;
   failed: boolean;
+  orderId: string;
 }

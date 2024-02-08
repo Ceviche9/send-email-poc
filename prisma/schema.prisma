@@ -16,6 +16,7 @@ model EmailVerification {
   sended_at DateTime   @default(now())
   failed    Boolean    @default(false)
   method    methodType @default(manually)
+  orderId   String     @default("")
 
   created_at DateTime @default(now())
 

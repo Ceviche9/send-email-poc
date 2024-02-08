@@ -24,7 +24,6 @@ export class OrdersController {
     const authorizationHeader = request.headers['authorization'];
     if (authorizationHeader !== process.env.KEY || !authorizationHeader) {
       Logger.error('Chave inválida enviada');
-      console.log('Chave inválida enviada');
       throw new UnauthorizedException('Chave inválida!');
     }
     const response = await this.ordersService.sendConfirmationEmail(data);
@@ -35,7 +34,8 @@ export class OrdersController {
   async verifyOrderStatus(
     @Req() request: Request,
     @Body() data: VerifyOrderDTO,
-  ): Promise<void> {
+  ): Promise<string> {
+    console.log('data', data);
     Logger.log('Rota de verify sendo chamada, body:', {
       Body: {
         pedido: data.numero,
@@ -45,6 +45,6 @@ export class OrdersController {
     const authorizationHeader = request.headers['authorization'];
     if (authorizationHeader !== process.env.KEY)
       throw new UnauthorizedException('Chave inválida!');
-    await this.ordersService.verifyOrderStatus(data);
+    return await this.ordersService.verifyOrderStatus(data);
   }
 }
