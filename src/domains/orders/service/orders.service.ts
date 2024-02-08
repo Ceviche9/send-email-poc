@@ -1,15 +1,17 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { StoreAPIProvider } from 'src/common/store/storeAPI.service';
-import { NodemailerProvider } from '../../common/nodemailer/nodemailer.service';
+import { NodemailerProvider } from '../../../common/nodemailer/nodemailer.service';
 import { GetOrderResponseDTO } from '../dtos/getOrderService.dto';
 import { SendConfirmationEmailDTO } from '../dtos/sendConfirmationEmail.dto';
 import { VerifyOrderDTO } from '../dtos/verifyOrder.dto';
+import { EmailVerificationRepository } from '../../emailVerification/repository/emailVerification.repository';
 
 @Injectable()
 export class OrdersService {
   constructor(
     private storeAPI: StoreAPIProvider,
     private nodemailerProvider: NodemailerProvider,
+    private emailVerificationRepository: EmailVerificationRepository,
   ) {}
   async sendConfirmationEmail({
     orderId,
@@ -54,6 +56,17 @@ export class OrdersService {
       name: order.cliente.nome,
     });
 
+    if (emailResponse.accepted.length > 0) {
+      await this.emailVerificationRepository.create({
+        email: emailResponse.envelope.to[0],
+      });
+    } else {
+      await this.emailVerificationRepository.create({
+        email: emailResponse.envelope.to[0],
+        failed: true,
+      });
+    }
+
     return {
       email: emailResponse,
       orderId: orderId,
@@ -94,11 +107,21 @@ export class OrdersService {
       name: order.cliente.nome,
     });
 
+    if (response.accepted.length > 0) {
+      await this.emailVerificationRepository.create({
+        email: response.envelope.to[0],
+      });
+    } else {
+      await this.emailVerificationRepository.create({
+        email: response.envelope.to[0],
+        failed: true,
+      });
+    }
+
     Logger.log('Email enviado:', {
       body: {
         queued: response.accepted,
       },
     });
-    console.log('Email enviado:', response.accepted);
   }
 }
