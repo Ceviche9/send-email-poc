@@ -1,10 +1,5 @@
 import { IsNotEmpty, IsNumber } from 'class-validator';
-import {
-  Cliente,
-  Item,
-  Pagamento,
-  Situacao,
-} from '../../../common/store/dto/order.dto';
+import { Cliente, Item, Situacao } from '../../../common/store/dto/order.dto';
 
 export class VerifyOrderDTO {
   @IsNotEmpty()
@@ -14,7 +9,12 @@ export class VerifyOrderDTO {
   @IsNumber()
   numero: number;
   @IsNotEmpty()
-  pagamentos: Pagamento[];
+  pagamentos: {
+    id: number;
+    numero_parcelas: number;
+    valor: number;
+    codigo: string;
+  }[];
   @IsNotEmpty()
   situacao: Situacao;
 }

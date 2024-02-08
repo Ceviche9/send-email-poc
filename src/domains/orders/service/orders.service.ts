@@ -73,7 +73,7 @@ export class OrdersService {
 
   async verifyOrderStatus(order: VerifyOrderDTO): Promise<string> {
     Logger.log('[OrdersService] - verifyOrderStatus');
-    if (order.pagamentos[0].forma_pagamento.codigo !== 'mercadopagov1') {
+    if (order.pagamentos[0].codigo !== 'mercadopagov1') {
       Logger.log('Pedido não foi pago pelo cartão');
       throw new BadRequestException('Esse pedido não não foi pago no cartão.');
     }
@@ -90,11 +90,11 @@ export class OrdersService {
     });
     const response = await this.nodemailerProvider.sendMail({
       order: Number(order.numero),
-      price: order.pagamentos[0].valor_pago,
+      price: String(order.pagamentos[0].valor),
       products: order.itens.map((item) => item.nome),
       email: process.env.MY_EMAIL,
-      installments: order.pagamentos[0].parcelamento.numero_parcelas,
-      installmentsValue: order.pagamentos[0].parcelamento.valor_parcela,
+      installments: order.pagamentos[0].numero_parcelas,
+      installmentsValue: order.pagamentos[0].valor,
       name: order.cliente.nome,
     });
 
