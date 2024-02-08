@@ -6,7 +6,7 @@ import {
   Logger,
   Get,
 } from '@nestjs/common';
-import { EmailVerificationService } from './emailVerification.service';
+import { EmailVerificationService } from './service/emailVerification.service';
 import { EmailVerification } from '@prisma/client';
 
 @Controller('/email')
