@@ -10,6 +10,7 @@ import {
 import { OrdersService } from './service/orders.service';
 import { GetOrderResponseDTO } from './dtos/getOrderService.dto';
 import { SendConfirmationEmailDTO } from './dtos/sendConfirmationEmail.dto';
+import { VerifyOrderDTO } from './dtos/verifyOrder.dto';
 
 @Controller('/orders')
 export class OrdersController {
@@ -22,9 +23,7 @@ export class OrdersController {
   ): Promise<GetOrderResponseDTO> {
     const authorizationHeader = request.headers['authorization'];
     if (authorizationHeader !== process.env.KEY || !authorizationHeader) {
-      Logger.error('Chave invávlida enviada:', authorizationHeader);
-      console.log('chave enviada', authorizationHeader);
-      console.log('chave que deve ser enviada', process.env.KEY);
+      Logger.error('Chave inválida enviada');
       throw new UnauthorizedException('Chave inválida!');
     }
     const response = await this.ordersService.sendConfirmationEmail(data);
@@ -34,13 +33,22 @@ export class OrdersController {
   @Post('/verify-status')
   async verifyOrderStatus(
     @Req() request: Request,
-    @Body() data: any,
-  ): Promise<void> {
-    Logger.log('Rota de verify sendo chamada, body:', data);
-    Logger.log('Rota de verify sendo chamada, header:', request.headers);
+    @Body() data: VerifyOrderDTO,
+  ): Promise<string> {
     const authorizationHeader = request.headers['authorization'];
-    if (authorizationHeader !== process.env.KEY)
+    const key = authorizationHeader.split(' ')[1];
+    if (key !== process.env.KEY) {
+      Logger.error('Chave inválida enviada');
+      console.log(request.headers);
       throw new UnauthorizedException('Chave inválida!');
-    await this.ordersService.verifyOrderStatus(data);
+    }
+    Logger.log('Rota de verify sendo chamada, body:', {
+      Body: {
+        pedido: data.numero,
+        pagamento: data.pagamentos[0].forma_pagamento.codigo,
+        situação: data.situacao.aprovado,
+      },
+    });
+    return await this.ordersService.verifyOrderStatus(data);
   }
 }

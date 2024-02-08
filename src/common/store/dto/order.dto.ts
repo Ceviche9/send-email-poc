@@ -22,7 +22,7 @@ export class OrderDTO {
   valor_total: string;
 }
 
-interface Cliente {
+export interface Cliente {
   cnpj: string | null;
   cpf: string;
   data_nascimento: string | null;
@@ -36,7 +36,7 @@ interface Cliente {
   telefone_principal: string | null;
 }
 
-interface EnderecoEntrega {
+export interface EnderecoEntrega {
   bairro: string;
   cep: string;
   cidade: string;
@@ -56,14 +56,14 @@ interface EnderecoEntrega {
   tipo: string;
 }
 
-interface FormaEnvio {
+export interface FormaEnvio {
   code: string;
   id: number;
   nome: string;
   tipo: string;
 }
 
-interface Envio {
+export interface Envio {
   data_criacao: string;
   data_modificacao: string;
   forma_envio: FormaEnvio;
@@ -73,12 +73,12 @@ interface Envio {
   valor: string;
 }
 
-interface Produto {
+export interface Produto {
   id_externo: number;
   resource_uri: string;
 }
 
-interface Item {
+export interface Item {
   altura: number;
   disponibilidade: number;
   id: number;
@@ -100,7 +100,7 @@ interface Item {
   tipo: string;
 }
 
-interface FormaPagamento {
+export interface FormaPagamento {
   codigo: string;
   configuracoes: {
     ativo: boolean;
@@ -112,12 +112,12 @@ interface FormaPagamento {
   resource_uri: string;
 }
 
-interface Parcelamento {
+export interface Parcelamento {
   numero_parcelas: number;
   valor_parcela: number;
 }
 
-interface Pagamento {
+export interface Pagamento {
   authorization_code: string | null;
   banco: string | null;
   bandeira: string;
@@ -133,7 +133,7 @@ interface Pagamento {
   valor_pago: string;
 }
 
-interface Situacao {
+export interface Situacao {
   aprovado: boolean;
   cancelado: boolean;
   codigo: string;

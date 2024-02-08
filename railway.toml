@@ -1,0 +1,12 @@
+# railway.toml
+
+# Comandos para build
+[build]
+  # Comando para construir o aplicativo
+  frontend = "npm run build"
+  prisma = "npm run prisma generate"
+
+# Comandos para deploy
+[deploy]
+  # Comando para iniciar o aplicativo em produção
+  start = "npm run start:prod"

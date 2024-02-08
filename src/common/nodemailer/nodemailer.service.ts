@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { SendMailRequestDTO } from './dto/sendMail.dto';
@@ -49,6 +53,7 @@ export class NodemailerProvider {
         );
       return info;
     } catch (err) {
+      Logger.error('Erro ao enviar o email', err);
       throw new InternalServerErrorException('Erro ao enviar email');
     }
   }
