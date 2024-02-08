@@ -73,25 +73,12 @@ export class OrdersService {
 
   async verifyOrderStatus(order: VerifyOrderDTO): Promise<string> {
     if (order.pagamentos[0].forma_pagamento.codigo !== 'mercadopagov1') {
-      Logger.log('Pedido não foi pago pelo cartão:', {
-        body: {
-          codigo: order.pagamentos[0].forma_pagamento.codigo,
-        },
-      });
-      console.log(
-        'Pedido não foi pago pelo cartão:',
-        order.pagamentos[0].forma_pagamento.codigo,
-      );
+      Logger.log('Pedido não foi pago pelo cartão');
       throw new BadRequestException('Esse pedido não não foi pago no cartão.');
     }
 
     if (!order.situacao.aprovado) {
-      Logger.log('Pedido não foi aprovado:', {
-        body: {
-          status: order.situacao,
-        },
-      });
-      console.log('Pedido não foi aprovado:', order.situacao);
+      Logger.log('Pedido não foi aprovado');
       throw new BadRequestException('Esse pedido ainda não foi aprovado!');
     }
 

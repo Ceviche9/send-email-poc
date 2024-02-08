@@ -1,8 +1,6 @@
-import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 import {
   Cliente,
-  EnderecoEntrega,
-  Envio,
   Item,
   Pagamento,
   Situacao,
@@ -11,18 +9,6 @@ import {
 export class VerifyOrderDTO {
   @IsNotEmpty()
   cliente: Cliente;
-  @IsOptional()
-  cliente_obs: string | null;
-  @IsOptional()
-  cupom_desconto: string | null;
-  @IsNotEmpty()
-  endereco_entrega: EnderecoEntrega;
-  @IsNotEmpty()
-  envios: Envio[];
-  @IsOptional()
-  id_anymarket: string | null;
-  @IsOptional()
-  id_externo: string | null;
   @IsNotEmpty()
   itens: Item[];
   @IsNumber()

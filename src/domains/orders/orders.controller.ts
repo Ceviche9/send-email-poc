@@ -35,16 +35,17 @@ export class OrdersController {
     @Req() request: Request,
     @Body() data: VerifyOrderDTO,
   ): Promise<string> {
+    const authorizationHeader = request.headers['authorization'];
+    if (authorizationHeader !== process.env.KEY)
+      throw new UnauthorizedException('Chave inválida!');
     console.log('data', data);
     Logger.log('Rota de verify sendo chamada, body:', {
       Body: {
         pedido: data.numero,
-        pagamento: data.pagamentos[0].pagamento_tipo,
+        pagamento: data.pagamentos[0].forma_pagamento.codigo,
+        situação: data.situacao.aprovado,
       },
     });
-    const authorizationHeader = request.headers['authorization'];
-    if (authorizationHeader !== process.env.KEY)
-      throw new UnauthorizedException('Chave inválida!');
     return await this.ordersService.verifyOrderStatus(data);
   }
 }
