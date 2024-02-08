@@ -5,6 +5,8 @@ import { GetOrderResponseDTO } from '../dtos/getOrderService.dto';
 import { SendConfirmationEmailDTO } from '../dtos/sendConfirmationEmail.dto';
 import { VerifyOrderDTO } from '../dtos/verifyOrder.dto';
 import { EmailVerificationRepository } from '../../emailVerification/repository/emailVerification.repository';
+import { methodType } from '@prisma/client';
+import { saveEmailRequestDTO } from '../dtos/saveEmail.dto';
 
 @Injectable()
 export class OrdersService {
@@ -56,16 +58,11 @@ export class OrdersService {
       name: order.cliente.nome,
     });
 
-    if (emailResponse.accepted.length > 0) {
-      await this.emailVerificationRepository.create({
-        email: emailResponse.envelope.to[0],
-      });
-    } else {
-      await this.emailVerificationRepository.create({
-        email: emailResponse.envelope.to[0],
-        failed: true,
-      });
-    }
+    await this.saveEmail({
+      email: emailResponse.envelope.to[0],
+      failed: emailResponse.accepted.length > 0 ? false : true,
+      method: methodType.manually,
+    });
 
     return {
       email: emailResponse,
@@ -101,27 +98,41 @@ export class OrdersService {
       order: Number(order.numero),
       price: order.pagamentos[0].valor_pago,
       products: order.itens.map((item) => item.nome),
-      email: process.env.ALAN_EMAIL,
+      email: process.env.MY_EMAIL,
       installments: order.pagamentos[0].parcelamento.numero_parcelas,
       installmentsValue: order.pagamentos[0].parcelamento.valor_parcela,
       name: order.cliente.nome,
     });
 
-    if (response.accepted.length > 0) {
-      await this.emailVerificationRepository.create({
-        email: response.envelope.to[0],
-      });
-    } else {
-      await this.emailVerificationRepository.create({
-        email: response.envelope.to[0],
-        failed: true,
-      });
-    }
+    await this.saveEmail({
+      email: response.envelope.to[0],
+      failed: response.accepted.length > 0 ? false : true,
+      method: methodType.webhook,
+    });
 
     Logger.log('Email enviado:', {
       body: {
         queued: response.accepted,
       },
     });
+  }
+
+  private async saveEmail({
+    email,
+    failed,
+    method,
+  }: saveEmailRequestDTO): Promise<void> {
+    if (!failed) {
+      await this.emailVerificationRepository.create({
+        email,
+        method,
+      });
+    } else {
+      await this.emailVerificationRepository.create({
+        email: email,
+        failed,
+        method,
+      });
+    }
   }
 }

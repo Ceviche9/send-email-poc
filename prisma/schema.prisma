@@ -10,14 +10,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model EmailVerification {
-  id             String   @id @unique @default(dbgenerated("gen_random_uuid()"))
-  email          String
-  sended_at      DateTime @default(now())
-  failed         Boolean @default(false)
+  id        String     @id @unique @default(dbgenerated("gen_random_uuid()"))
+  email     String
+  sended_at DateTime   @default(now())
+  failed    Boolean    @default(false)
+  method    methodType @default(manually)
 
-  created_at    DateTime @default(now())
+  created_at DateTime @default(now())
 
   @@map("email_verifications")
+}
+
+enum methodType {
+  webhook
+  manually
+
+  @@map("method_type")
 }

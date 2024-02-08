@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { EmailVerification, Prisma } from '@prisma/client';
+import { EmailVerification, Prisma, methodType } from '@prisma/client';
 import { DefaultArgs } from '@prisma/client/runtime/library';
 import { PrismaService } from 'src/config/database/prisma.service';
 
@@ -13,14 +13,17 @@ export class EmailVerificationRepository {
   async create({
     email,
     failed,
+    method,
   }: {
     email: string;
     failed?: boolean;
+    method: methodType;
   }): Promise<EmailVerification> {
     return await this.EmailVerificationEntity.create({
       data: {
         email,
         failed,
+        method,
       },
     });
   }
