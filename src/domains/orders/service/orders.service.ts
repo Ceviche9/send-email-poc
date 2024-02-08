@@ -83,7 +83,11 @@ export class OrdersService {
       throw new BadRequestException('Esse pedido ainda não foi aprovado!');
     }
 
-    Logger.log('[OrdersService] - verifyOrderStatus: Chamando nodemailer');
+    Logger.log('[OrdersService] - verifyOrderStatus: Chamando nodemailer', {
+      body: {
+        pagamento: order.pagamentos[0],
+      },
+    });
     const response = await this.nodemailerProvider.sendMail({
       order: Number(order.numero),
       price: order.pagamentos[0].valor_pago,
