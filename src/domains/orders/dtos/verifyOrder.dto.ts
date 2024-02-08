@@ -13,7 +13,9 @@ export class VerifyOrderDTO {
     id: number;
     numero_parcelas: number;
     valor: number;
-    codigo: string;
+    forma_pagamento: {
+      codigo: string;
+    };
   }[];
   @IsNotEmpty()
   situacao: Situacao;

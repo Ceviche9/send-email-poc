@@ -73,7 +73,7 @@ export class OrdersService {
 
   async verifyOrderStatus(order: VerifyOrderDTO): Promise<string> {
     Logger.log('[OrdersService] - verifyOrderStatus');
-    if (order.pagamentos[0].codigo !== 'mercadopagov1') {
+    if (order.pagamentos[0].forma_pagamento.codigo !== 'mercadopagov1') {
       Logger.log('Pedido não foi pago pelo cartão');
       throw new BadRequestException('Esse pedido não não foi pago no cartão.');
     }
