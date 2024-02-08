@@ -6,7 +6,7 @@ import {
   Item,
   Pagamento,
   Situacao,
-} from '../../common/store/dto/order.dto';
+} from '../../../common/store/dto/order.dto';
 
 export class VerifyOrderDTO {
   @IsNotEmpty()
