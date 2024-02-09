@@ -23,12 +23,7 @@ export class VerifyOrderStatusService {
       throw new BadRequestException('Esse pedido ainda não foi aprovado!');
     }
 
-    Logger.log('[VerifyOrderStatusService] - Chamando nodemailer', {
-      body: {
-        pagamento: order.pagamentos[0],
-      },
-    });
-
+    Logger.log('[VerifyOrderStatusService] - Buscando email no banco');
     const emailAlreadyVerified =
       await this.emailVerificationService.findByEmail(order.cliente.email);
 
@@ -39,6 +34,7 @@ export class VerifyOrderStatusService {
       );
     }
 
+    Logger.log('[VerifyOrderStatusService] - Chamando nodemailer provider');
     const response = await this.nodemailerProvider.sendMail({
       order: Number(order.numero),
       price: String(order.pagamentos[0].valor),
