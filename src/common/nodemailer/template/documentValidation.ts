@@ -80,8 +80,10 @@ export function generateDocumentValidation({
             >Procon</a
           >.
         </p>
-        <p>Agradecemos vossa atenção!</p>
-        <p>-- Atenciosamente</p>
+        <P>
+            Caso já tenha enviado a documentação por favor desconsiderar esse email.
+        </P>
+        <p>Att Equipe GK INFO STORE</p>
       </div>
       <img src="https://imgur.com/gXdgnn4.png" alt="Assinatura">
     </body>

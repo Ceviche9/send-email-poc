@@ -11,6 +11,16 @@ export class EmailVerificationRepository {
     this.EmailVerificationEntity = this.prisma.emailVerification;
   }
 
+  async findByEmail(email: string): Promise<EmailVerification> {
+    const responseArray = await this.EmailVerificationEntity.findMany({
+      where: {
+        email,
+      },
+    });
+
+    return responseArray[0];
+  }
+
   async findAll(): Promise<EmailVerification[]> {
     return await this.EmailVerificationEntity.findMany();
   }

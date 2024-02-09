@@ -28,11 +28,22 @@ export class VerifyOrderStatusService {
         pagamento: order.pagamentos[0],
       },
     });
+
+    const emailAlreadyVerified =
+      await this.emailVerificationService.findByEmail(order.cliente.email);
+
+    if (emailAlreadyVerified && !emailAlreadyVerified.failed) {
+      Logger.log('Um email já foi enviado para esse usuário.');
+      throw new BadRequestException(
+        'Esse usuário já recebeu um email de validação!',
+      );
+    }
+
     const response = await this.nodemailerProvider.sendMail({
       order: Number(order.numero),
       price: String(order.pagamentos[0].valor),
       products: order.itens.map((item) => item.nome),
-      email: process.env.MY_EMAIL,
+      email: order.cliente.email,
       installments: order.pagamentos[0].numero_parcelas,
       installmentsValue: order.pagamentos[0].valor,
       name: order.cliente.nome,
