@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "email_verifications" ALTER COLUMN "sended_at" SET DATA TYPE TIMESTAMPTZ(6),
+ALTER COLUMN "created_at" SET DATA TYPE TIMESTAMPTZ(6);
