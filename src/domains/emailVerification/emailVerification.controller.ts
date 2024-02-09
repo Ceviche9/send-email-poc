@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
   Logger,
   Get,
+  Param,
 } from '@nestjs/common';
 import { EmailVerificationService } from './service/emailVerification.service';
 import { EmailVerification } from '@prisma/client';
@@ -25,5 +26,12 @@ export class EmailVerificationController {
       throw new UnauthorizedException('Chave inválida!');
     }
     return await this.emailVerificationService.getAllEmails();
+  }
+
+  @Get('/:orderId')
+  async findByOrderId(
+    @Param('orderId') orderId: string,
+  ): Promise<EmailVerification> {
+    return await this.emailVerificationService.findByOrderId(orderId);
   }
 }

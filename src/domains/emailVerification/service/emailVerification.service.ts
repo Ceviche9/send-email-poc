@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { EmailVerificationRepository } from '../repository/emailVerification.repository';
 import { EmailVerification } from '@prisma/client';
 import { saveEmailRequestDTO } from 'src/domains/orders/dtos/saveEmail.dto';
@@ -8,6 +8,20 @@ export class EmailVerificationService {
   constructor(
     private emailVerificationRepository: EmailVerificationRepository,
   ) {}
+
+  async findByOrderId(orderId: string): Promise<EmailVerification> {
+    const response =
+      await this.emailVerificationRepository.findByOrderId(orderId);
+
+    if (!response) {
+      Logger.log('Não foi enviado nenhum email para esse pedido');
+      throw new BadRequestException(
+        'Não foi enviado nenhum email para esse pedido',
+      );
+    }
+
+    return response;
+  }
 
   async getAllEmails(): Promise<EmailVerification[]> {
     return await this.emailVerificationRepository.findAll();
