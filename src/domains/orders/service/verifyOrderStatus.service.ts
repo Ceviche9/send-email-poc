@@ -27,8 +27,12 @@ export class VerifyOrderStatusService {
     const emailAlreadyVerified =
       await this.emailVerificationService.findByEmail(order.cliente.email);
 
-    if (emailAlreadyVerified && !emailAlreadyVerified.failed) {
-      Logger.log('Um email já foi enviado para esse usuário.');
+    if (emailAlreadyVerified) {
+      Logger.log('Um email já foi enviado para esse usuário.', {
+        body: {
+          emailAlreadyVerified,
+        },
+      });
       throw new BadRequestException(
         'Esse usuário já recebeu um email de validação!',
       );

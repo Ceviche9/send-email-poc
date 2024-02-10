@@ -41,15 +41,10 @@ export class EmailVerificationService {
         orderId,
       });
     } catch (err) {
-      console.log(err);
-      Logger.error('Não foi possível salvar essa informação no banco.', {
-        body: {
-          email,
-          failed,
-          method,
-          orderId,
-        },
-      });
+      Logger.error('Não foi possível salvar essa informação no banco.');
+      throw new BadRequestException(
+        'Um email para esse pedido já foi salvo na banco',
+      );
     }
   }
 
