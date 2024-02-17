@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { EmailVerificationRepository } from '../repository/emailVerification.repository';
 import { EmailVerification } from '@prisma/client';
+import { saveEmailRequestDTO } from 'src/domains/orders/dtos/saveEmail.dto';
 
 @Injectable()
 export class EmailVerificationService {
@@ -8,7 +9,46 @@ export class EmailVerificationService {
     private emailVerificationRepository: EmailVerificationRepository,
   ) {}
 
+  async findByOrderId(orderId: string): Promise<EmailVerification> {
+    const response =
+      await this.emailVerificationRepository.findByOrderId(orderId);
+
+    if (!response) {
+      Logger.log('Não foi enviado nenhum email para esse pedido');
+      throw new BadRequestException(
+        'Não foi enviado nenhum email para esse pedido',
+      );
+    }
+
+    return response;
+  }
+
   async getAllEmails(): Promise<EmailVerification[]> {
     return await this.emailVerificationRepository.findAll();
+  }
+
+  async saveEmail({
+    email,
+    failed,
+    method,
+    orderId,
+  }: saveEmailRequestDTO): Promise<void> {
+    try {
+      await this.emailVerificationRepository.create({
+        email: email,
+        failed,
+        method,
+        orderId,
+      });
+    } catch (err) {
+      Logger.error('Não foi possível salvar essa informação no banco.');
+      throw new BadRequestException(
+        'Um email para esse pedido já foi salvo na banco',
+      );
+    }
+  }
+
+  async findByEmail(email: string): Promise<EmailVerification> {
+    return await this.emailVerificationRepository.findByEmail(email);
   }
 }

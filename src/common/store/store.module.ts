@@ -5,5 +5,6 @@ import { StoreAPIProvider } from './storeAPI.service';
   imports: [],
   controllers: [],
   providers: [StoreAPIProvider],
+  exports: [StoreAPIProvider],
 })
 export class StoreAPIModule {}

@@ -13,12 +13,12 @@ datasource db {
 model EmailVerification {
   id        String     @id @unique @default(dbgenerated("gen_random_uuid()"))
   email     String
-  sended_at DateTime   @default(now())
+  sended_at DateTime   @default(now()) @db.Timestamptz(6)
   failed    Boolean    @default(false)
   method    methodType @default(manually)
-  orderId   String     @default("")
+  orderId   String     @unique
 
-  created_at DateTime @default(now())
+  created_at DateTime @default(now()) @db.Timestamptz(6)
 
   @@map("email_verifications")
 }

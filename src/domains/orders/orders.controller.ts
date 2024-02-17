@@ -7,14 +7,18 @@ import {
   Body,
   Logger,
 } from '@nestjs/common';
-import { OrdersService } from './service/orders.service';
 import { GetOrderResponseDTO } from './dtos/getOrderService.dto';
 import { SendConfirmationEmailDTO } from './dtos/sendConfirmationEmail.dto';
 import { VerifyOrderDTO } from './dtos/verifyOrder.dto';
+import { SendConfirmationEmailService } from './service/sendConfirmationEmail.service';
+import { VerifyOrderStatusService } from './service/verifyOrderStatus.service';
 
 @Controller('/orders')
 export class OrdersController {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(
+    private readonly sendConfirmationEmailService: SendConfirmationEmailService,
+    private readonly verifyOrderStatusService: VerifyOrderStatusService,
+  ) {}
 
   @Post('/send-email')
   async sendEmailConfirmation(
@@ -26,7 +30,7 @@ export class OrdersController {
       Logger.error('Chave inválida enviada');
       throw new UnauthorizedException('Chave inválida!');
     }
-    const response = await this.ordersService.sendConfirmationEmail(data);
+    const response = await this.sendConfirmationEmailService.execute(data);
     return response;
   }
 
@@ -39,7 +43,6 @@ export class OrdersController {
     const key = authorizationHeader.split(' ')[1];
     if (key !== process.env.KEY) {
       Logger.error('Chave inválida enviada');
-      console.log(request.headers);
       throw new UnauthorizedException('Chave inválida!');
     }
     Logger.log('Rota de verify sendo chamada, body:', {
@@ -49,6 +52,6 @@ export class OrdersController {
         situação: data.situacao.aprovado,
       },
     });
-    return await this.ordersService.verifyOrderStatus(data);
+    return await this.verifyOrderStatusService.execute(data);
   }
 }
