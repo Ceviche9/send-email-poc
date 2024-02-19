@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { EmailVerificationRepository } from '../repository/emailVerification.repository';
 import { EmailVerification } from '@prisma/client';
-import { saveEmailRequestDTO } from 'src/domains/orders/dtos/saveEmail.dto';
+import { EmailVerificationRepository } from '../infra/repository/emailVerification.repository';
+import { SaveEmailRequestDTO } from 'src/domains/orders/dtos/saveEmail.dto';
 
 @Injectable()
 export class EmailVerificationService {
@@ -32,7 +32,7 @@ export class EmailVerificationService {
     failed,
     method,
     orderId,
-  }: saveEmailRequestDTO): Promise<void> {
+  }: SaveEmailRequestDTO): Promise<void> {
     try {
       await this.emailVerificationRepository.create({
         email: email,

@@ -2,10 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { EmailVerification, Prisma } from '@prisma/client';
 import { DefaultArgs } from '@prisma/client/runtime/library';
 import { PrismaService } from 'src/config/database/prisma.service';
-import { saveEmailRequestDTO } from 'src/domains/orders/dtos/saveEmail.dto';
+import { SaveEmailRequestDTO } from 'src/domains/orders/dtos/saveEmail.dto';
+import { IEmailVerificationRepository } from '../implementation/IEmailVerificationRepository';
 
 @Injectable()
-export class EmailVerificationRepository {
+export class EmailVerificationRepository
+  implements IEmailVerificationRepository
+{
   private EmailVerificationEntity: Prisma.EmailVerificationDelegate<DefaultArgs>;
   constructor(private prisma: PrismaService) {
     this.EmailVerificationEntity = this.prisma.emailVerification;
@@ -38,7 +41,7 @@ export class EmailVerificationRepository {
     failed,
     method,
     orderId,
-  }: saveEmailRequestDTO): Promise<EmailVerification> {
+  }: SaveEmailRequestDTO): Promise<EmailVerification> {
     return await this.EmailVerificationEntity.create({
       data: {
         email,
