@@ -16,9 +16,7 @@ model EmailVerification {
   sended_at DateTime   @default(now()) @db.Timestamptz(6)
   failed    Boolean    @default(false)
   method    methodType @default(manually)
-  orderId   String     @unique
-
-  created_at DateTime @default(now()) @db.Timestamptz(6)
+  order_id   String     @unique
 
   @@map("email_verifications")
 }

@@ -14,7 +14,7 @@ export class EmailVerificationRepository {
   async findByOrderId(orderId: string): Promise<EmailVerification> {
     return await this.EmailVerificationEntity.findUnique({
       where: {
-        orderId,
+        order_id: orderId,
       },
     });
   }
@@ -44,7 +44,7 @@ export class EmailVerificationRepository {
         email,
         failed,
         method,
-        orderId,
+        order_id: orderId,
       },
     });
   }
