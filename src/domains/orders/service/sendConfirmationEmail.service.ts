@@ -39,7 +39,7 @@ export class SendConfirmationEmailService {
       throw new BadRequestException('Esse pedido ainda não foi aprovado!');
     }
 
-    if (order.pagamentos[0].forma_pagamento.codigo !== 'mercadopagov1') {
+    if (!order.pagamentos[0].forma_pagamento.codigo.includes('mercadopago')) {
       Logger.log('Esse pedido não foi pago no cartão', {
         body: {
           codigo: order.pagamentos[0].forma_pagamento.codigo,
